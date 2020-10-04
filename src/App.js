@@ -8,10 +8,12 @@ class App extends Component{
     this.state = {
       value: '',
       tasks: [],
+      numTasks: 0,
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDel = this.handleDel.bind(this);
   }
 
   handleChange(event){
@@ -23,7 +25,19 @@ class App extends Component{
     this.setState({
       tasks: newTasks.concat(this.state.value),
       value: '',
+      numTasks: this.state.numTasks + 1,
     });
+  }
+
+  handleDel(event){
+    const task = event.target.parentElement.getAttribute("title");
+    const newTasks = this.state.tasks;
+    const index = newTasks.indexOf(task);
+    newTasks.splice(index,1);
+    this.setState({
+      tasks: newTasks,
+    });
+    // console.log(event.target.parentElement.firstChild.innerHTML);
   }
 
   render(){
@@ -49,6 +63,7 @@ class App extends Component{
         </form>
         <Overview
           tasks = {this.state.tasks}
+          delete = {this.handleDel}
         />
       </div>
     );
